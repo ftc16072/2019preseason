@@ -13,6 +13,7 @@ public class TankDriveOpMode extends OpMode {
     public void init() {
         robot = new Robot();
         robot.init(hardwareMap);
+        telemetry.setMsTransmissionInterval(100);
     }
 
     // Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
