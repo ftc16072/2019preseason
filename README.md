@@ -8,7 +8,11 @@ It is important to note that this repository is large and can take a long time a
 
 * If you are a git user, *FIRST* recommends that you use the --depth command line argument to only clone the most current version of the repository:
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;git clone --depth=1 https://github.com/ftc16072/2019preseason</p>
+```
+       git clone --depth=1 https://github.com/ftc16072/2019preseason
+       git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+       git fetch origin
+```
 
 ## Getting Help
 ### User Documentation and Tutorials
