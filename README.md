@@ -1,6 +1,11 @@
 ## Welcome!
 This GitHub repository contains the source code for **FTC 16072 preseason**.
 
+## Travis-CI build status
+
+ Master Branch [![Build Status](https://travis-ci.com/ftc16072/2019preseason.svg?branch=master)](https://travis-ci.com/ftc16072/2019preseason)
+
+
 It is based off of: https://github.com/ftctechnh/ftc_app
 
 ## Downloading the Project
