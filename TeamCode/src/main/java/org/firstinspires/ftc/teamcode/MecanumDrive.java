@@ -21,10 +21,25 @@ class MecanumDrive {
     }
 
     void setSpeeds(double flSpeed, double frSpeed, double blSpeed, double brSpeed) {
-        frontLeft.setPower(flSpeed);
-        frontRight.setPower(frSpeed);
-        backLeft.setPower(blSpeed);
-        backRight.setPower(brSpeed);
+        double largest = 1.0;
+        largest = Math.max(largest, Math.abs(flSpeed));
+        largest = Math.max(largest, Math.abs(frSpeed));
+        largest = Math.max(largest, Math.abs(blSpeed));
+        largest = Math.max(largest, Math.abs(brSpeed));
+
+        frontLeft.setPower(flSpeed / largest);
+        frontRight.setPower(frSpeed / largest);
+        backLeft.setPower(blSpeed / largest);
+        backRight.setPower(brSpeed / largest);
+    }
+
+    void driveMecanum(double forward, double strafe, double rotate) {
+        double frontLeftSpeed = strafe + forward + rotate;
+        double frontRightSpeed = strafe - forward - rotate;
+        double backLeftSpeed = strafe - forward + rotate;
+        double backRightSpeed = strafe + forward - rotate;
+
+        setSpeeds(frontLeftSpeed, frontRightSpeed, backLeftSpeed, backRightSpeed);
 
 
     }
