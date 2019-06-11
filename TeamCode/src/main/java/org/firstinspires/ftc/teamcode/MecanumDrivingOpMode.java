@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
 @TeleOp()
-@Disabled
+//@Disabled
 public class MecanumDrivingOpMode extends OpMode {
     private MecanumDrive mecanumDrive = new MecanumDrive();
 
