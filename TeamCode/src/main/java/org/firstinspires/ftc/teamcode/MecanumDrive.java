@@ -34,10 +34,10 @@ class MecanumDrive {
     }
 
     void driveMecanum(double forward, double strafe, double rotate) {
-        double frontLeftSpeed = strafe + forward + rotate;
-        double frontRightSpeed = strafe - forward - rotate;
-        double backLeftSpeed = strafe - forward + rotate;
-        double backRightSpeed = strafe + forward - rotate;
+        double frontLeftSpeed = forward + strafe + rotate;
+        double frontRightSpeed = forward - strafe - rotate;
+        double backLeftSpeed = forward - strafe + rotate;
+        double backRightSpeed = forward + strafe - rotate;
 
         setSpeeds(frontLeftSpeed, frontRightSpeed, backLeftSpeed, backRightSpeed);
 
