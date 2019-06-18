@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 class MecanumDrive {
     private DcMotor frontLeft;
     private DcMotor frontRight;
@@ -33,11 +35,15 @@ class MecanumDrive {
         backRight.setPower(brSpeed / largest);
     }
 
-    void driveMecanum(double forward, double strafe, double rotate) {
+    void driveMecanum(Telemetry telemetry, double forward, double strafe, double rotate) {
         double frontLeftSpeed = forward + strafe + rotate;
         double frontRightSpeed = forward - strafe - rotate;
         double backLeftSpeed = forward - strafe + rotate;
         double backRightSpeed = forward + strafe - rotate;
+        telemetry.addData("front left", frontLeftSpeed);
+        telemetry.addData("front right", frontRightSpeed);
+        telemetry.addData("back left", backLeftSpeed);
+        telemetry.addData("back right", backRightSpeed);
 
         setSpeeds(frontLeftSpeed, frontRightSpeed, backLeftSpeed, backRightSpeed);
 
