@@ -22,7 +22,7 @@ public class SlowerMecanumDrivingOpMode extends OpMode {
         double strafe = gamepad1.left_stick_x;
         double rotate = gamepad1.right_stick_x;
 
-        mecanumDrive.driveMecanum(telemetry, forward / 4, strafe / 4, rotate / 4);
+        mecanumDrive.driveMecanum(forward / 4, strafe / 4, rotate / 4);
 
         mecanumDrive.reportEncoders(telemetry);
     }

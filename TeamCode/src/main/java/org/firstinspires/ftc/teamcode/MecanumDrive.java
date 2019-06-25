@@ -39,15 +39,11 @@ class MecanumDrive {
         backRight.setPower(brSpeed / largest);
     }
 
-    void driveMecanum(Telemetry telemetry, double forward, double strafe, double rotate) {
+    void driveMecanum(double forward, double strafe, double rotate) {
         double frontLeftSpeed = forward + strafe + rotate;
         double frontRightSpeed = forward - strafe - rotate;
         double backLeftSpeed = forward - strafe + rotate;
         double backRightSpeed = forward + strafe - rotate;
-        telemetry.addData("front left", frontLeftSpeed);
-        telemetry.addData("front right", frontRightSpeed);
-        telemetry.addData("back left", backLeftSpeed);
-        telemetry.addData("back right", backRightSpeed);
 
         setSpeeds(frontLeftSpeed, frontRightSpeed, backLeftSpeed, backRightSpeed);
 
