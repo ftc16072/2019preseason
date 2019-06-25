@@ -24,5 +24,6 @@ public class SlowerMecanumDrivingOpMode extends OpMode {
 
         mecanumDrive.driveMecanum(telemetry, forward / 4, strafe / 4, rotate / 4);
 
+        mecanumDrive.reportEncoders(telemetry);
     }
 }

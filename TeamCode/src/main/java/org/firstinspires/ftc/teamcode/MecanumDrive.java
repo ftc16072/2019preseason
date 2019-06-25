@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -20,6 +21,9 @@ class MecanumDrive {
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight = hwMap.get(DcMotor.class, "back_right");
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     void setSpeeds(double flSpeed, double frSpeed, double blSpeed, double brSpeed) {
@@ -46,6 +50,16 @@ class MecanumDrive {
         telemetry.addData("back right", backRightSpeed);
 
         setSpeeds(frontLeftSpeed, frontRightSpeed, backLeftSpeed, backRightSpeed);
+
+
+    }
+
+    void reportEncoders(Telemetry telemetry) {
+        telemetry.addData("Encoders", "%d %d %d %d",
+                frontLeft.getCurrentPosition(),
+                frontRight.getCurrentPosition(),
+                backLeft.getCurrentPosition(),
+                backRight.getCurrentPosition());
 
 
     }
