@@ -1,11 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.lynx.LynxEmbeddedIMU;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import org.firstinspires.ftc.robotcore.internal.usb.exception.RobotUsbTimeoutException;
 
 @TeleOp()
 public class GyroReadingOpMode extends OpMode {
@@ -20,6 +16,6 @@ public class GyroReadingOpMode extends OpMode {
     // Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
     @Override
     public void loop() {
-        telemetry.addData("Gyro", robot.getHeading());
+        telemetry.addData("Gyro", robot.getHeadingRadians());
     }
 }
