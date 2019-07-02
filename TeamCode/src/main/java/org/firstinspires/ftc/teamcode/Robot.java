@@ -41,7 +41,7 @@ public class Robot {
     }
 
 
-    void driveFieldRelative(Telemetry telemetry, double x, double y, double rotate) {
+    void driveFieldRelative(double x, double y, double rotate) {
         //Convert x, y to theta, r
 
         double r = Math.sqrt(x * x + y * y);
@@ -62,6 +62,11 @@ public class Robot {
     void quack() {
         SoundPlayer.getInstance().startPlaying(appContext, quackID);
 
+    }
+
+    void driveFieldRelativeAngle(double x, double y, double angle) {
+        double delta = angle - getHeadingRadians();
+        driveFieldRelative(x, y, delta);
     }
 
 }
