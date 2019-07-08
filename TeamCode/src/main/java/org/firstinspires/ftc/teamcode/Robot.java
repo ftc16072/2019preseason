@@ -13,6 +13,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+import javax.lang.model.util.ElementScanner6;
+
 public class Robot {
     private LynxEmbeddedIMU imu;
     private MecanumDrive mecanumDrive = new MecanumDrive();
@@ -66,6 +68,11 @@ public class Robot {
 
     void driveFieldRelativeAngle(double x, double y, double angle) {
         double delta = angle - getHeadingRadians();
+        if (delta >= Math.PI) {
+            delta = delta - (2 * Math.PI);
+        } else if (delta <= -Math.PI) {
+            delta = delta + (2 * Math.PI);
+        }
         driveFieldRelative(x, y, delta);
     }
 
