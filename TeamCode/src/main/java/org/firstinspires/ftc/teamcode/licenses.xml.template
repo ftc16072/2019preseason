@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><!-- This needs to be copied into the res/values directory as licenses.xml with your licenses in it -->
+<resources>
+    <string name="vuforiaLicense">--- VUFORIA LICENSE KEY GOES HERE ---</string>
+</resources>
