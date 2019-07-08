@@ -1,3 +1,6 @@
+# license file
+TeamCode/src/main/res/values/license.xml
+
 # built application files
 *.apk
 *.ap_
