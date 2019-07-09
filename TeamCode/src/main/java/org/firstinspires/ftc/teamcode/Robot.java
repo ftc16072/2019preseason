@@ -6,12 +6,16 @@ import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxEmbeddedIMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
+import javax.lang.model.util.ElementScanner6;
 
 public class Robot {
     private LynxEmbeddedIMU imu;
@@ -41,7 +45,7 @@ public class Robot {
     }
 
 
-    void driveFieldRelative(Telemetry telemetry, double x, double y, double rotate) {
+    void driveFieldRelative(double x, double y, double rotate) {
         //Convert x, y to theta, r
 
         double r = Math.sqrt(x * x + y * y);
@@ -62,6 +66,18 @@ public class Robot {
     void quack() {
         SoundPlayer.getInstance().startPlaying(appContext, quackID);
 
+    }
+
+    void driveFieldRelativeAngle(double x, double y, double angle) {
+        double delta = angle - getHeadingRadians();
+        if (delta >= Math.PI) {
+            delta = delta - (2 * Math.PI);
+        } else if (delta <= -Math.PI) {
+            delta = delta + (2 * Math.PI);
+        }
+        double MAX_ROTATE = 0.7; //This is to shrink how fast we can rotate so we don't fly past the angle
+        delta = Range.clip(delta, -MAX_ROTATE, MAX_ROTATE);
+        driveFieldRelative(x, y, delta);
     }
 
 }
