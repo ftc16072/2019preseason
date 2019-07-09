@@ -6,7 +6,9 @@ import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxEmbeddedIMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -73,6 +75,8 @@ public class Robot {
         } else if (delta <= -Math.PI) {
             delta = delta + (2 * Math.PI);
         }
+        double MAX_ROTATE = 0.7; //This is to shrink how fast we can rotate so we don't fly past the angle
+        delta = Range.clip(delta, -MAX_ROTATE, MAX_ROTATE);
         driveFieldRelative(x, y, delta);
     }
 
