@@ -68,6 +68,10 @@ public class Robot {
 
     }
 
+    void strafe(double speed) {
+        mecanumDrive.driveMecanum(0, speed, 0);
+    }
+
     void driveFieldRelativeAngle(double x, double y, double angle) {
         double delta = angle - getHeadingRadians();
         if (delta >= Math.PI) {
@@ -79,5 +83,6 @@ public class Robot {
         delta = Range.clip(delta, -MAX_ROTATE, MAX_ROTATE);
         driveFieldRelative(x, y, delta);
     }
+
 
 }
