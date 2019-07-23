@@ -33,7 +33,7 @@ public class Robot {
         BNO055IMU.Parameters params = new BNO055IMU.Parameters();
         imu.initialize(params);
         colorSensor = hwMap.get(ColorSensor.class, "sensor_color_distance");
-        distanceSensor = hwMap.get(DistanceSensor.class, "sensor_color_distance");
+        distanceSensor = hwMap.get(DistanceSensor.class, "sensor_distance");
         mecanumDrive.init(hwMap);
         quackID = hwMap.appContext.getResources().getIdentifier("quack", "raw", hwMap.appContext.getPackageName());
         appContext = hwMap.appContext;
