@@ -18,11 +18,11 @@ public class plannedControlSchemeOpMode extends OpMode {
     public void loop() {
         double forward = gamepad1.left_stick_y * -1; //The y direction on the gamepad is reversed idk why
         double strafe = gamepad1.left_stick_x;
-
+        Polar rightJoystick = Polar.fromCartesian(gamepad1.right_stick_x, -gamepad1.right_stick_y);
         telemetry.addData("Gyro Heeading", robot.getHeadingRadians());
         // mecanumDrive.driveMecanum(forward, strafe, rotate);
 
-        double r = Math.sqrt(gamepad1.right_stick_x * gamepad1.right_stick_x + gamepad1.right_stick_y * gamepad1.right_stick_y);
+        double r = rightJoystick.getR();
         telemetry.addData("r", r);
         if (gamepad1.right_trigger >= 0.05) {
             robot.strafe(gamepad1.right_trigger);
@@ -35,9 +35,8 @@ public class plannedControlSchemeOpMode extends OpMode {
         } else {
 
             if (r >= 0.8) {
-                double theta = Math.atan2(gamepad1.right_stick_x, -gamepad1.right_stick_y);
-                telemetry.addData("joystick angle", robot.degreeFromRadians(theta));
-                robot.driveFieldRelativeAngle(forward, strafe, theta);
+                telemetry.addData("joystick angle", rightJoystick.getDegrees());
+                robot.driveFieldRelativeAngle(forward, strafe, rightJoystick);
             } else {
                 robot.driveFieldRelative(forward, strafe, 0.0);
             }
