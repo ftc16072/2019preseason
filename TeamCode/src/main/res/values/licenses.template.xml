@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- This needs to be uncommented and the file copied to licenses.xml
+    In your java code use the following in init: hardwareMap.appContext.getString(R.string.vuforiaLicense);
+    <string name="vuforiaLicense">VUFORIA LICENSE KEY GOES HERE</string>
+    -->
+</resources>
