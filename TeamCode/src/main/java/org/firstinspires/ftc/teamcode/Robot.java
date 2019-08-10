@@ -63,6 +63,22 @@ public class Robot {
 
     }
 
+    double getTiltRadians() {
+        Orientation angles;
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        return -angles.secondAngle;   // Not sure why this is negative, but philip guessed it :)
+
+    }
+
+    double getYawRadians() {
+        Orientation angles;
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        return -angles.thirdAngle;   // Not sure why this is negative, but philip guessed it :)
+
+    }
+
     double degreeFromRadians(double theta) {
         return theta * 360 / (2 * Math.PI);
     }

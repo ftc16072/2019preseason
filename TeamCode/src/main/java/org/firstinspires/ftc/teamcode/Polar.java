@@ -39,5 +39,7 @@ public class Polar {
     double getY() {
         return r * Math.cos(theta);
     }
+
+
 }
 
