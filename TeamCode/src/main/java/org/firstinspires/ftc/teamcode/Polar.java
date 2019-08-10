@@ -24,7 +24,7 @@ public class Polar {
 
     static Polar fromCartesian(double x, double y) {
         double r = Math.hypot(x, y);
-        double theta = Math.atan2(y, x);
+        double theta = Math.atan2(x, y);
         return new Polar(theta, r);
     }
 
