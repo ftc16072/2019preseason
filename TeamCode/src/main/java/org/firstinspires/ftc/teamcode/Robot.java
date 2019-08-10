@@ -10,15 +10,11 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.Const;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-
-import javax.lang.model.util.ElementScanner6;
 
 public class Robot {
     private LynxEmbeddedIMU imu;
@@ -63,27 +59,33 @@ public class Robot {
 
     }
 
+    double getTiltRadians() {
+        Orientation angles;
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        return -angles.secondAngle;   // Not sure why this is negative, but philip guessed it :)
+
+    }
+
+    double getYawRadians() {
+        Orientation angles;
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        return -angles.thirdAngle;   // Not sure why this is negative, but philip guessed it :)
+
+    }
+
     double degreeFromRadians(double theta) {
         return theta * 360 / (2 * Math.PI);
     }
 
 
     void driveFieldRelative(double x, double y, double rotate) {
-        //Convert x, y to theta, r
-
-        double r = Math.sqrt(x * x + y * y);
-        double theta = Math.atan2(y, x);
-
-        //Get modified theta, r based off gyro heading
+        Polar drive = Polar.fromCartesian(x, y);
         double heading = getHeadingRadians();
 
-        double modifiedTheta = theta - heading;
-
-        //Convert theta and r back to a forward and strafe
-        double forward = r * Math.cos(modifiedTheta);
-        double strafe = r * Math.sin(modifiedTheta);
-
-        mecanumDrive.driveMecanum(forward, strafe, rotate);
+        drive.subtractAngle(heading);
+        mecanumDrive.driveMecanum(drive.getY(), drive.getX(), rotate);
     }
 
     void quack() {

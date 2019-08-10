@@ -16,6 +16,8 @@ public class GyroReadingOpMode extends OpMode {
     // Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
     @Override
     public void loop() {
-        telemetry.addData("Gyro", robot.getHeadingRadians());
+        telemetry.addData("Gyro Z:", robot.getHeadingRadians());
+        telemetry.addData("Gyro Y:", robot.getTiltRadians());
+        telemetry.addData("Gyro X:", robot.getYawRadians());
     }
 }
