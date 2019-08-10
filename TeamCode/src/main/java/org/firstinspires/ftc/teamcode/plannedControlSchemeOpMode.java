@@ -36,7 +36,7 @@ public class plannedControlSchemeOpMode extends OpMode {
 
             if (r >= 0.8) {
                 telemetry.addData("joystick angle", rightJoystick.getDegrees());
-                robot.driveFieldRelativeAngle(forward, strafe, rightJoystick);
+                robot.driveFieldRelativeAngle(forward, strafe, rightJoystick.getTheta());
             } else {
                 robot.driveFieldRelative(forward, strafe, 0.0);
             }
