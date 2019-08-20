@@ -23,16 +23,23 @@ public class Polar {
     }
 
     static Polar fromCartesian(double x, double y) {
-        double r = Math.hypo
+        double r = Math.hypot(x, y);
+        double theta = Math.atan2(x, y);
+        return new Polar(theta, r);
+    }
 
     void subtractAngle(double heading) {
         theta = theta - heading;
     }
 
     double getX() {
-            returt(x, y);
-            double theta = Math.atan2(x, y);
-            return new Polar(theta, r);
-        }
-        n r *Math.sin(theta);
+        return r * Math.sin(theta);
     }
+
+    double getY() {
+        return r * Math.cos(theta);
+    }
+
+
+}
+
