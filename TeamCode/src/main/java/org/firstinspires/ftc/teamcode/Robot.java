@@ -28,8 +28,8 @@ public class Robot {
         imu = hwMap.get(LynxEmbeddedIMU.class, "imu");
         BNO055IMU.Parameters params = new BNO055IMU.Parameters();
         imu.initialize(params);
-        colorSensor = hwMap.get(ColorSensor.class, "sensor_color_distance");
-        distanceSensor = hwMap.get(DistanceSensor.class, "sensor_distance");
+        //    colorSensor = hwMap.get(ColorSensor.class, "sensor_color_distance");
+        //    distanceSensor = hwMap.get(DistanceSensor.class, "sensor_distance");
         mecanumDrive.init(hwMap);
         quackID = hwMap.appContext.getResources().getIdentifier("quack", "raw", hwMap.appContext.getPackageName());
         appContext = hwMap.appContext;
@@ -109,5 +109,15 @@ public class Robot {
         driveFieldRelative(x, y, delta);
     }
 
+    Polar[] reportEncoders() {
+        return mecanumDrive.returnEncoders();
+    }
 
+    void resetEncoders() {
+        mecanumDrive.setStartPosition();
+    }
+
+    Polar getDistanceTraveled() {
+        return mecanumDrive.getDistanceTraveled();
+    }
 }

@@ -11,6 +11,10 @@ class MecanumDrive {
     private DcMotor frontRight;
     private DcMotor backRight;
     private DcMotor backLeft;
+    private int frontLeftOffset;
+    private int frontRightOffset;
+    private int backLeftOffset;
+    private int backRightOffset;
 
     void init(HardwareMap hwMap) {
         frontLeft = hwMap.get(DcMotor.class, "front_left");
@@ -58,5 +62,34 @@ class MecanumDrive {
                 backRight.getCurrentPosition());
 
 
+    }
+
+    Polar[] returnEncoders() {
+        Polar frontLeftPolar = new Polar(-Math.PI / 4, frontLeft.getCurrentPosition() - frontLeftOffset);
+        Polar frontRightPolar = new Polar(Math.PI / 4, frontRight.getCurrentPosition() - frontRightOffset);
+        Polar backLeftPolar = new Polar(Math.PI / 4, backLeft.getCurrentPosition() - backLeftOffset);
+        Polar backRightPolar = new Polar(-Math.PI / 4, backRight.getCurrentPosition() - backLeftOffset);
+        Polar[] motorPolars = new Polar[4];
+        motorPolars[0] = frontLeftPolar;
+        motorPolars[1] = frontRightPolar;
+        motorPolars[2] = backLeftPolar;
+        motorPolars[3] = backRightPolar;
+        return motorPolars;
+    }
+
+    Polar getDistanceTraveled() {
+        Polar[] motors = returnEncoders();
+        double newX = motors[0].getX() + motors[1].getX() + motors[2].getX() + motors[3].getX();
+        double newY = motors[0].getY() + motors[1].getY() + motors[2].getY() + motors[3].getY();
+        Polar ticks = Polar.fromCartesian(newX, newY);
+        Polar rotations = new Polar(ticks.getTheta(), ticks.getR() / 383.6);
+        return rotations;
+    }
+
+    void setStartPosition() {
+        frontLeftOffset = frontLeft.getCurrentPosition();
+        frontRightOffset = frontRight.getCurrentPosition();
+        backLeftOffset = backLeft.getCurrentPosition();
+        backRightOffset = backRight.getCurrentPosition();
     }
 }

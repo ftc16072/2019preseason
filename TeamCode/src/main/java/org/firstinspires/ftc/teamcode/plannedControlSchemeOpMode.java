@@ -11,6 +11,7 @@ public class plannedControlSchemeOpMode extends OpMode {
     @Override
     public void init() {
         robot.init(hardwareMap);
+        robot.resetEncoders();
     }
 
     // Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
@@ -45,5 +46,7 @@ public class plannedControlSchemeOpMode extends OpMode {
                 robot.quack();
             }
         }
+
+        telemetry.addData("Theta, R", "%02f %02f", robot.getDistanceTraveled().getTheta(), robot.getDistanceTraveled().getR());
     }
 }
