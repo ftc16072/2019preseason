@@ -68,7 +68,7 @@ class MecanumDrive {
         Polar frontLeftPolar = new Polar(-Math.PI / 4, frontLeft.getCurrentPosition() - frontLeftOffset);
         Polar frontRightPolar = new Polar(Math.PI / 4, frontRight.getCurrentPosition() - frontRightOffset);
         Polar backLeftPolar = new Polar(Math.PI / 4, backLeft.getCurrentPosition() - backLeftOffset);
-        Polar backRightPolar = new Polar(-Math.PI / 4, backRight.getCurrentPosition() - backLeftOffset);
+        Polar backRightPolar = new Polar(-Math.PI / 4, backRight.getCurrentPosition() - backRightOffset);
         Polar[] motorPolars = new Polar[4];
         motorPolars[0] = frontLeftPolar;
         motorPolars[1] = frontRightPolar;
