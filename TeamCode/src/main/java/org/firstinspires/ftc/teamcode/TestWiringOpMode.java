@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -9,11 +8,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 //@Disabled
 public class TestWiringOpMode extends OpMode {
     private MecanumDrive mecanumDrive = new MecanumDrive();
+    private JewelDropper jewelDropper = new JewelDropper();
 
     // Code to run ONCE when the driver hits INIT
     @Override
     public void init() {
         mecanumDrive.init(hardwareMap);
+        jewelDropper.init(hardwareMap);
     }
 
     // Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
@@ -33,6 +34,14 @@ public class TestWiringOpMode extends OpMode {
 
         } else {
             mecanumDrive.setSpeeds(0, 0, 0, 0);
+        }
+        if (gamepad1.dpad_up) {
+            jewelDropper.up();
+            telemetry.addData("jewel", "up");
+        }
+        if (gamepad1.dpad_down) {
+            jewelDropper.down();
+            telemetry.addData("jewel", "down");
         }
     }
 }
