@@ -6,11 +6,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp()
 public class plannedControlSchemeOpMode extends OpMode {
     private Robot robot = new Robot();
+    private JewelDropper jewelDropper = new JewelDropper();
 
     // Code to run ONCE when the driver hits INIT
     @Override
     public void init() {
         robot.init(hardwareMap);
+        jewelDropper.init(hardwareMap);
     }
 
     // Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
@@ -44,6 +46,14 @@ public class plannedControlSchemeOpMode extends OpMode {
             if (gamepad1.a) {
                 robot.quack();
             }
+        }
+        if (gamepad1.dpad_up) {
+            jewelDropper.up();
+            telemetry.addData("jewel", "up");
+        }
+        if (gamepad1.dpad_down) {
+            jewelDropper.down();
+            telemetry.addData("jewel", "down");
         }
     }
 }
