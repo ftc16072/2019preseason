@@ -120,4 +120,22 @@ public class Robot {
     Polar getDistanceTraveled() {
         return mecanumDrive.getDistanceTraveled();
     }
+
+    boolean autoDriving(Polar movement, double orientation) {
+
+        double desiredOrientation = orientation;
+        Polar currentMovement = mecanumDrive.getDistanceTraveled();
+        double currentOrientation = getHeadingRadians();
+        double thetaDiff = movement.getTheta() - currentMovement.getTheta();
+        double rDiff = movement.getR() - currentMovement.getR();
+        double orientationDiff = desiredOrientation - currentOrientation;
+        Polar movementDiff = new Polar(thetaDiff, rDiff);
+        driveFieldRelativeAngle(movementDiff.getX(), movementDiff.getY(), orientationDiff);
+        if ((currentMovement.getR() < movement.getR()) & ((currentOrientation < desiredOrientation - 2) || (currentOrientation > desiredOrientation + 2)))
+            ;
+        {
+            return true;
+        }
+
+    }
 }
