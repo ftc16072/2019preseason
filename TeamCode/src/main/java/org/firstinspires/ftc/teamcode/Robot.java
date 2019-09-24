@@ -23,6 +23,7 @@ public class Robot {
     private Context appContext;
     private ColorSensor colorSensor;
     private DistanceSensor distanceSensor;
+    private static boolean quacking = false;
 
     void init(HardwareMap hwMap) {
         imu = hwMap.get(LynxEmbeddedIMU.class, "imu");
@@ -89,8 +90,17 @@ public class Robot {
     }
 
     void quack() {
-        SoundPlayer.getInstance().startPlaying(appContext, quackID);
+        if (!quacking) {
+            // create a sound parameter that holds the desired player parameters.
+            SoundPlayer.PlaySoundParams params = new SoundPlayer.PlaySoundParams();
+            params.loopControl = 0;
+            params.waitForNonLoopingSoundsToFinish = true;
 
+            quacking = true;
+            SoundPlayer.getInstance().startPlaying(appContext, quackID, params, null, () -> {
+                quacking = false;
+            });
+        }
     }
 
     void strafe(double speed) {
