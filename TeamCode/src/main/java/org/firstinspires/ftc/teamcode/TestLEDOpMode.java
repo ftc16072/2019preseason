@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,16 +13,27 @@ public class TestLEDOpMode extends OpMode {
     private QwiicLEDStrip ledStrip;
     private ElapsedTime elapsedTime = new ElapsedTime();
     private int pattern = 0;
-    private int[] redArray = new int[]{148, 75, 0, 0, 255, 255, 255, 0, 0, 0};
-    private int[] greenArray = new int[]{0, 0, 0, 255, 255, 127, 0, 0, 0, 0};
-    private int[] blueArray = new int[]{211, 130, 255, 0, 0, 0, 0, 0, 0, 0};
+    private @ColorInt
+    int[] colors = new int[]{
+            Color.rgb(148, 0, 211),
+            Color.rgb(75, 0, 130),
+            Color.rgb(0, 0, 255),
+            Color.rgb(0, 255, 0),
+            Color.rgb(255, 0, 0),
+            Color.rgb(255, 255, 0),
+            Color.parseColor("purple"),
+            Color.parseColor("teal"),
+            Color.parseColor("silver"),
+            Color.rgb(0, 0, 0)
+    };
 
     // Code to run ONCE when the driver hits INIT
     @Override
     public void init() {
         ledStrip = hardwareMap.get(QwiicLEDStrip.class, "led_strip");
         ledStrip.setLEDBrightness(4);
-        ledStrip.setAllLEDColor(0x255, 0x0, 0x0);
+        ledStrip.setAllLEDColor(Color.parseColor("red"));
+        ledStrip.setLEDColor(5, Color.parseColor("blue"));
     }
 
     @Override
@@ -31,11 +45,11 @@ public class TestLEDOpMode extends OpMode {
     @Override
     public void loop() {
         if (elapsedTime.milliseconds() >= 500) {
-            if (pattern == 8) {
-                ledStrip.setLEDColor(redArray, greenArray, blueArray, 10);
+            if (pattern == colors.length) {
+                ledStrip.setLEDColor(colors);
                 pattern = 0;
             } else {
-                ledStrip.setAllLEDColor(redArray[pattern], greenArray[pattern], blueArray[pattern]);
+                ledStrip.setAllLEDColor(colors[pattern]);
                 pattern++;
             }
             elapsedTime.reset();

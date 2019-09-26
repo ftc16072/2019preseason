@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
+
 import com.qualcomm.robotcore.hardware.I2cAddr;
-import com.qualcomm.robotcore.hardware.I2cDeviceSynchSimple;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynchDevice;
+import com.qualcomm.robotcore.hardware.I2cDeviceSynchSimple;
 import com.qualcomm.robotcore.hardware.I2cWaitControl;
 import com.qualcomm.robotcore.hardware.configuration.annotations.DeviceProperties;
 import com.qualcomm.robotcore.hardware.configuration.annotations.I2cDeviceType;
-
 
 @I2cDeviceType()
 @DeviceProperties(name = "QWIIC LED Strip", description = "Sparkfun QWIIC LED Strip", xmlTag = "QWIIC_LED_STRIP")
@@ -32,53 +34,63 @@ public class QwiicLEDStrip extends I2cDeviceSynchDevice<I2cDeviceSynchSimple> {
     /*
      * Change the color of a specific LED
      * @param number which LED to change (1 - 255)
-     * @param red    what the red value should be (0-255)
-     * @param green  what the green value should be (0-255)
-     * @param blue   what the blue value should be (0-255)
+     * @param color  what color to set it to
      */
-    void setLEDColor(int number, int red, int green, int blue) {
+    public void setLEDColor(int number, @ColorInt int color) {
         byte[] data = new byte[4];
         data[0] = (byte) number;
-        data[1] = (byte) red;
-        data[2] = (byte) green;
-        data[3] = (byte) blue;
-        deviceClient.write(Commands.WRITE_SINGLE_LED_COLOR.bVal, data, I2cWaitControl.WRITTEN);
+        data[1] = (byte) Color.red(color);
+        data[2] = (byte) Color.green(color);
+        data[3] = (byte) Color.blue(color);
+        writeI2C(Commands.WRITE_SINGLE_LED_COLOR, data);
     }
 
     /*
      * Change the color of all LEDs to a single color
-     * @param red    what the red value should be (0-255)
-     * @param green  what the green value should be (0-255)
-     * @param blue   what the blue value should be (0-255)
+     * @param color  what the color should be
      */
-    void setAllLEDColor(int red, int green, int blue) {
+    void setAllLEDColor(@ColorInt int color) {
         byte[] data = new byte[3];
-        data[0] = (byte) red;
-        data[1] = (byte) green;
-        data[2] = (byte) blue;
-        deviceClient.write(Commands.WRITE_ALL_LED_COLOR.bVal, data, I2cWaitControl.WRITTEN);
+        data[0] = (byte) Color.red(color);
+        data[1] = (byte) Color.green(color);
+        data[2] = (byte) Color.blue(color);
+        writeI2C(Commands.WRITE_ALL_LED_COLOR, data);
     }
 
+    /*
+     * Send a segment of the LED array
+     * @param cmd - command to send
+     * @param array - the values (limited from 0..255)
+     * @param offset - the starting value (LED only, array starts at 0)
+     * @param length - the length to send
+     */
     private void sendSegment(Commands cmd, int[] array, int offset, int length) {
         byte[] data = new byte[length + 2];
         data[0] = (byte) length;
         data[1] = (byte) offset;
 
         for (int i = 0; i < length; i++) {
-            data[2 + i] = (byte) array[offset + i];
+            data[2 + i] = (byte) array[i];
         }
-        deviceClient.write(cmd.bVal, data, I2cWaitControl.WRITTEN);
+        writeI2C(cmd, data);
     }
 
     /*
      * Change the color of an LED color segment
-     * @param redArray    what the red value should be (0-255)
-     * @param greenArray  what the green value should be (0-255)
-     * @param blueArray   what the blue value should be (0-255)
+     * @param colors      what the colors should be
      * @param offset      where in the array to start
      * @param length      length to send (limited to 12)
      */
-    private void setLEDColorSegment(int[] redArray, int[] greenArray, int[] blueArray, int offset, int length) {
+    private void setLEDColorSegment(@ColorInt int[] colors, int offset, int length) {
+        int[] redArray = new int[length];
+        int[] greenArray = new int[length];
+        int[] blueArray = new int[length];
+
+        for (int i = 0; i < colors.length; i++) {
+            redArray[i] = Color.red(colors[i + offset]);
+            greenArray[i] = Color.green(colors[i + offset]);
+            blueArray[i] = Color.blue(colors[i + offset]);
+        }
         sendSegment(Commands.WRITE_RED_ARRAY, redArray, offset, length);
         sendSegment(Commands.WRITE_GREEN_ARRAY, greenArray, offset, length);
         sendSegment(Commands.WRITE_BLUE_ARRAY, blueArray, offset, length);
@@ -86,18 +98,17 @@ public class QwiicLEDStrip extends I2cDeviceSynchDevice<I2cDeviceSynchSimple> {
 
     /*
      * Change the color of all LEDs using arrays
-     * @param redArray    what the red value should be (0-255)
-     * @param greenArray  what the green value should be (0-255)
-     * @param blueArray   what the blue value should be (0-255)
-     * @param length      the size of the array
+     * @param colors
      */
-    void setLEDColor(int[] redArray, int[] greenArray, int[] blueArray, int length) {
+    void setLEDColor(@ColorInt int[] colors) {
+        int length = colors.length;
+
         int numInLastSegment = length % 12;
         int numSegments = length / 12;
         for (int i = 0; i < numSegments; i++) {
-            setLEDColorSegment(redArray, greenArray, blueArray, i * 12, 12);
+            setLEDColorSegment(colors, i * 12, 12);
         }
-        setLEDColorSegment(redArray, greenArray, blueArray, numSegments * 12, numInLastSegment);
+        setLEDColorSegment(colors, numSegments * 12, numInLastSegment);
     }
 
     /*
@@ -110,7 +121,7 @@ public class QwiicLEDStrip extends I2cDeviceSynchDevice<I2cDeviceSynchSimple> {
         byte[] data = new byte[2];
         data[0] = (byte) number;
         data[1] = (byte) brightness;
-        deviceClient.write(Commands.WRITE_SINGLE_LED_BRIGHTNESS.bVal, data, I2cWaitControl.WRITTEN);
+        writeI2C(Commands.WRITE_SINGLE_LED_BRIGHTNESS, data);
     }
 
     /*
@@ -121,12 +132,12 @@ public class QwiicLEDStrip extends I2cDeviceSynchDevice<I2cDeviceSynchSimple> {
     void setLEDBrightness(int brightness) {
         byte[] data = new byte[1];
         data[0] = (byte) brightness;
-        deviceClient.write(Commands.WRITE_ALL_LED_BRIGHTNESS.bVal, data, I2cWaitControl.WRITTEN);
+        writeI2C(Commands.WRITE_ALL_LED_BRIGHTNESS, data);
     }
 
     //Turn all LEDS off by setting color to 0
     void LEDOff() {
-        this.setAllLEDColor(0x0, 0x0, 0x0);
+        this.setAllLEDColor(Color.rgb(0, 0, 0));
     }
 
     /*
@@ -137,7 +148,11 @@ public class QwiicLEDStrip extends I2cDeviceSynchDevice<I2cDeviceSynchSimple> {
     void changeLength(int newLength) {
         byte[] data = new byte[1];
         data[0] = (byte) newLength;
-        deviceClient.write(Commands.CHANGE_LED_LENGTH.bVal, data, I2cWaitControl.WRITTEN);
+        writeI2C(Commands.CHANGE_LED_LENGTH, data);
+    }
+
+    private void writeI2C(Commands cmd, byte[] data) {
+        deviceClient.write(cmd.bVal, data, I2cWaitControl.WRITTEN);
     }
 
 
@@ -155,7 +170,6 @@ public class QwiicLEDStrip extends I2cDeviceSynchDevice<I2cDeviceSynchSimple> {
     public String getDeviceName() {
         return "Qwiic LED Strip";
     }
-
 
     private final static I2cAddr ADDRESS_I2C_DEFAULT = I2cAddr.create7bit(0x23);
 
